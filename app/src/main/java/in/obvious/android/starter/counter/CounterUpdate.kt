@@ -6,6 +6,7 @@ import com.spotify.mobius.Next.noChange
 import com.spotify.mobius.Update
 
 class CounterUpdate(
+    private val minAllowedCounterValue: Int,
     private val maxAllowedCounterValue: Int
 ) : Update<CounterModel, CounterEvent, CounterEffect> {
 
@@ -15,13 +16,20 @@ class CounterUpdate(
     ): Next<CounterModel, CounterEffect> {
         return when (event) {
             IncrementClicked -> incrementCounter(model)
-            DecrementClicked -> next(model.decrement())
+            DecrementClicked -> decrementCounter(model)
         }
     }
 
     private fun incrementCounter(model: CounterModel): Next<CounterModel, CounterEffect> {
         return if (model.counterValue < maxAllowedCounterValue)
             next(model.increment())
+        else
+            noChange()
+    }
+
+    private fun decrementCounter(model: CounterModel): Next<CounterModel, CounterEffect> {
+        return if (model.counterValue > minAllowedCounterValue)
+            next(model.decrement())
         else
             noChange()
     }

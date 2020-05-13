@@ -8,8 +8,12 @@ import org.junit.Test
 class CounterUpdateTest {
 
     private val maxAllowedCounterValue = 3
+    private val minimumAllowedCounterValue = 0
 
-    private val update = CounterUpdate(maxAllowedCounterValue = maxAllowedCounterValue)
+    private val update = CounterUpdate(
+        minAllowedCounterValue = minimumAllowedCounterValue,
+        maxAllowedCounterValue = maxAllowedCounterValue
+    )
 
     private val spec = UpdateSpec(update)
 
@@ -45,14 +49,21 @@ class CounterUpdateTest {
 
     @Test
     fun `when the increment button is clicked when the counter value is maximum allowed, the counter value must not change`() {
-        val model = CounterModel(0)
-            .increment()
-            .increment()
-            .increment()
+        val model = CounterModel(maxAllowedCounterValue)
 
         spec
             .given(model)
             .whenEvent(IncrementClicked)
+            .then(assertThatNext(hasNothing()))
+    }
+
+    @Test
+    fun `when the decrement button is clicked when the counter value is minimum allowed, the counter value must not change`() {
+        val model = CounterModel(minimumAllowedCounterValue)
+
+        spec
+            .given(model)
+            .whenEvent(DecrementClicked)
             .then(assertThatNext(hasNothing()))
     }
 }
