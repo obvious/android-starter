@@ -7,4 +7,8 @@ data class CounterModel(
     fun increment(): CounterModel {
         return copy(counterValue = counterValue + 1)
     }
+
+    fun decrement(): CounterModel {
+        return copy(counterValue = counterValue - 1)
+    }
 }

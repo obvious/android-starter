@@ -12,6 +12,7 @@ class CounterUpdate : Update<CounterModel, CounterEvent, CounterEffect> {
     ): Next<CounterModel, CounterEffect> {
         return when (event) {
             IncrementClicked -> next(model.increment())
+            DecrementClicked -> next(model.decrement())
         }
     }
 }
