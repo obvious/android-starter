@@ -16,8 +16,10 @@ class CounterScreen : Fragment() {
     private val loop: MobiusLoop.Builder<CounterModel, CounterEvent, CounterEffect> by lazy(
         LazyThreadSafetyMode.NONE
     ) {
+        val update = CounterUpdate(maxAllowedCounterValue = 10)
+
         Mobius
-            .loop(CounterUpdate(), CounterEffectHandler())
+            .loop(update, CounterEffectHandler())
             .init(CounterInit())
     }
 
