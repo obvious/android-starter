@@ -21,8 +21,14 @@ class CounterScreen : Fragment() {
             maxAllowedCounterValue = 10
         )
 
+        val countdownFactory = object : Countdown.Factory {
+            override fun create(): Countdown {
+                return PlatformCountdown()
+            }
+        }
+
         Mobius
-            .loop(update, CounterEffectHandler())
+            .loop(update, CounterEffectHandler(countdownFactory = countdownFactory))
             .init(CounterInit())
     }
 

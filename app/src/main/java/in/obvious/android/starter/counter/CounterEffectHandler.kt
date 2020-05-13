@@ -1,17 +1,53 @@
 package `in`.obvious.android.starter.counter
 
+import `in`.obvious.android.starter.util.Cancelable
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
-class CounterEffectHandler<F, E> : Connectable<F, E> {
+class CounterEffectHandler(
+    private val countdownFactory: Countdown.Factory
+) : Connectable<CounterEffect, CounterEvent> {
 
-    override fun connect(output: Consumer<E>): Connection<F> {
-        return object : Connection<F> {
+    var cancellables: List<Cancelable> = emptyList()
 
-            override fun accept(value: F) {}
+    override fun connect(events: Consumer<CounterEvent>): Connection<CounterEffect> {
+        return object : Connection<CounterEffect> {
+
+            override fun accept(effect: CounterEffect) {
+                when (effect) {
+                    is StartCountdown -> startCountdown(effect, events)
+                }
+            }
 
             override fun dispose() {}
         }
+    }
+
+    private fun startCountdown(
+        effect: StartCountdown,
+        events: Consumer<CounterEvent>
+    ) {
+        val countdown = countdownFactory.create()
+
+        countdown.start(
+            tickAmount = effect.ticks,
+            tickTimeUnit = effect.timeUnit,
+            tick = { events.accept(CountdownTick) },
+            done = {
+                events.accept(CountdownComplete)
+                removeCancelable(countdown)
+            }
+        )
+
+        addCancellable(countdown)
+    }
+
+    private fun addCancellable(cancelable: Cancelable) {
+        cancellables = cancellables + cancelable
+    }
+
+    private fun removeCancelable(cancelable: Cancelable) {
+        cancellables = cancellables - cancelable
     }
 }
