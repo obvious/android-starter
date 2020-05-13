@@ -4,6 +4,7 @@ import com.spotify.mobius.test.NextMatchers.*
 import com.spotify.mobius.test.UpdateSpec
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import org.junit.Test
+import java.util.concurrent.TimeUnit.SECONDS
 
 class CounterUpdateTest {
 
@@ -65,5 +66,37 @@ class CounterUpdateTest {
             .given(model)
             .whenEvent(DecrementClicked)
             .then(assertThatNext(hasNothing()))
+    }
+
+    @Test
+    fun `when the countdown button is clicked, the countdown must be started`() {
+        val counterValue = maxAllowedCounterValue
+        val model = CounterModel(counterValue)
+
+        spec
+            .given(model)
+            .whenEvent(StartCountdownClicked)
+            .then(
+                assertThatNext(
+                    hasModel(model.countdownStarted()),
+                    hasEffects(StartCountdown(counterValue, SECONDS) as CounterEffect)
+                )
+            )
+    }
+
+    @Test
+    fun `when a countdown tick is received, the counter value should be decremented`() {
+        val counterValue = 2
+        val model = CounterModel(counterValue)
+
+        spec
+            .given(model)
+            .whenEvent(CountdownTick)
+            .then(
+                assertThatNext(
+                    hasModel(model.decrement()),
+                    hasNoEffects()
+                )
+            )
     }
 }

@@ -1,9 +1,9 @@
 package `in`.obvious.android.starter.counter
 
 import com.spotify.mobius.Next
-import com.spotify.mobius.Next.next
-import com.spotify.mobius.Next.noChange
+import com.spotify.mobius.Next.*
 import com.spotify.mobius.Update
+import java.util.concurrent.TimeUnit.SECONDS
 
 class CounterUpdate(
     private val minAllowedCounterValue: Int,
@@ -17,6 +17,11 @@ class CounterUpdate(
         return when (event) {
             IncrementClicked -> incrementCounter(model)
             DecrementClicked -> decrementCounter(model)
+            StartCountdownClicked -> next(
+                model.countdownStarted(),
+                setOf(StartCountdown(model.counterValue, SECONDS))
+            )
+            CountdownTick -> next(model.decrement())
         }
     }
 
