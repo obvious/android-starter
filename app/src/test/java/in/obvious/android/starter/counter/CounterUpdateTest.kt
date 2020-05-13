@@ -99,4 +99,20 @@ class CounterUpdateTest {
                 )
             )
     }
+
+    @Test
+    fun `when the countdown is complete, the UI should be updated`() {
+        val counterValue = 0
+        val model = CounterModel(counterValue)
+
+        spec
+            .given(model)
+            .whenEvent(CountdownComplete)
+            .then(
+                assertThatNext(
+                    hasModel(model.countdownEnded()),
+                    hasNoEffects()
+                )
+            )
+    }
 }

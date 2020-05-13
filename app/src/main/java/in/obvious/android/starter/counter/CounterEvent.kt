@@ -9,3 +9,5 @@ object DecrementClicked: CounterEvent()
 object StartCountdownClicked: CounterEvent()
 
 object CountdownTick: CounterEvent()
+
+object CountdownComplete: CounterEvent()

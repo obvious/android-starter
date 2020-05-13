@@ -22,6 +22,7 @@ class CounterUpdate(
                 setOf(StartCountdown(model.counterValue, SECONDS))
             )
             CountdownTick -> next(model.decrement())
+            CountdownComplete -> next(model.countdownEnded())
         }
     }
 

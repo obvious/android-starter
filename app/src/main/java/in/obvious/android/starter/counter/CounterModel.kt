@@ -16,4 +16,8 @@ data class CounterModel(
     fun countdownStarted(): CounterModel {
         return copy(isCountdownOngoing = true)
     }
+
+    fun countdownEnded(): CounterModel {
+        return copy(isCountdownOngoing = false)
+    }
 }
