@@ -1,7 +1,7 @@
 package `in`.obvious.android.starter.counter
 
 import com.spotify.mobius.Next
-import com.spotify.mobius.Next.noChange
+import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 
 class CounterUpdate : Update<CounterModel, CounterEvent, CounterEffect> {
@@ -10,6 +10,8 @@ class CounterUpdate : Update<CounterModel, CounterEvent, CounterEffect> {
         model: CounterModel,
         event: CounterEvent
     ): Next<CounterModel, CounterEffect> {
-        return noChange()
+        return when (event) {
+            IncrementClicked -> next(model.increment())
+        }
     }
 }

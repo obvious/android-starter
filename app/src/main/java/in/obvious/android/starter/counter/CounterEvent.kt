@@ -1,3 +1,5 @@
 package `in`.obvious.android.starter.counter
 
-class CounterEvent
+sealed class CounterEvent
+
+object IncrementClicked: CounterEvent()
