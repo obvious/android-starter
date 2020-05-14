@@ -20,7 +20,9 @@ class CounterEffectHandler(
                 }
             }
 
-            override fun dispose() {}
+            override fun dispose() {
+                cancellables.forEach(Cancelable::cancel)
+            }
         }
     }
 
