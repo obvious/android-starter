@@ -1,5 +1,6 @@
 package `in`.obvious.android.starter.counter
 
+import `in`.obvious.android.starter.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,9 @@ import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
 import com.spotify.mobius.functions.Consumer
+import kotlinx.android.synthetic.main.screen_counter.*
+import kotlinx.android.synthetic.main.screen_counter.view.*
+import kotlinx.android.synthetic.main.screen_counter.view.startCountdown
 
 class CounterScreen : Fragment() {
 
@@ -35,8 +39,7 @@ class CounterScreen : Fragment() {
     private val controller: MobiusLoop.Controller<CounterModel, CounterEvent> by lazy(
         LazyThreadSafetyMode.NONE
     ) {
-        MobiusAndroid
-            .controller(loop, CounterModel())
+        MobiusAndroid.controller(loop, CounterModel())
     }
 
     override fun onCreateView(
@@ -44,7 +47,7 @@ class CounterScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)!!
+        val view = inflater.inflate(R.layout.screen_counter, container, false)
 
         controller.connect { events -> connectEvents(view, events) }
 
@@ -70,17 +73,42 @@ class CounterScreen : Fragment() {
         rootView: View,
         events: Consumer<CounterEvent>
     ): Connection<CounterModel> {
-        // Set up UI event listeners here
+        setupEvents(rootView, events)
 
         return object : Connection<CounterModel> {
 
             override fun accept(value: CounterModel) {
-                // Update UI from the model
+                render(rootView, value)
             }
 
             override fun dispose() {
-                // Dispose event listeners
+                disposeEvents(rootView)
             }
+        }
+    }
+
+    private fun setupEvents(view: View, events: Consumer<CounterEvent>) {
+        view.incrementCounter.setOnClickListener { events.accept(IncrementClicked) }
+        view.decrementCounter.setOnClickListener { events.accept(DecrementClicked) }
+        view.startCountdown.setOnClickListener { events.accept(StartCountdownClicked) }
+    }
+
+    private fun disposeEvents(view: View) {
+        view.incrementCounter.setOnClickListener(null)
+        view.decrementCounter.setOnClickListener(null)
+        view.startCountdown.setOnClickListener(null)
+    }
+
+    private fun render(view: View, model: CounterModel) {
+        view.counterLabel.text = model.counterValue.toString()
+        if (model.isCountdownOngoing) {
+            view.incrementCounter.visibility = View.INVISIBLE
+            view.decrementCounter.visibility = View.INVISIBLE
+            startCountdown.isEnabled = false
+        } else {
+            view.incrementCounter.visibility = View.VISIBLE
+            view.decrementCounter.visibility = View.VISIBLE
+            startCountdown.isEnabled = true
         }
     }
 }
