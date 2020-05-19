@@ -1,6 +1,7 @@
 package `in`.obvious.android.starter.counter
 
 import `in`.obvious.android.starter.R
+import `in`.obvious.android.starter.mobius.MainThreadUiWorkRunner
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,10 @@ class CounterScreen : Fragment() {
         }
 
         Mobius
-            .loop(update, CounterEffectHandler(countdownFactory = countdownFactory))
+            .loop(update, CounterEffectHandler(
+                countdownFactory = countdownFactory,
+                uiWorkRunner = MainThreadUiWorkRunner()
+            ))
             .init(CounterInit())
     }
 

@@ -1,7 +1,7 @@
 package `in`.obvious.android.starter.counter
 
-import com.google.common.truth.Truth
-import com.google.common.truth.Truth.*
+import `in`.obvious.android.starter.ImmediateUiWorkRunner
+import com.google.common.truth.Truth.assertThat
 import com.spotify.mobius.Connection
 import com.spotify.mobius.test.RecordingConsumer
 import org.junit.Test
@@ -43,7 +43,10 @@ class CounterEffectHandlerTest {
     private fun connection(
         countdownFactory: Countdown.Factory
     ): Connection<CounterEffect> {
-        val effectHandler = CounterEffectHandler(countdownFactory = countdownFactory)
+        val effectHandler = CounterEffectHandler(
+            countdownFactory = countdownFactory,
+            uiWorkRunner = ImmediateUiWorkRunner()
+        )
 
         return effectHandler.connect(receivedEvents)
     }
