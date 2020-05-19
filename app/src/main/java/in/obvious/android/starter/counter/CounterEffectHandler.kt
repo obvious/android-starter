@@ -9,7 +9,7 @@ class CounterEffectHandler(
     private val countdownFactory: Countdown.Factory
 ) : Connectable<CounterEffect, CounterEvent> {
 
-    var cancellables: List<Cancelable> = emptyList()
+    private var cancellables: List<Cancelable> = emptyList()
 
     override fun connect(events: Consumer<CounterEvent>): Connection<CounterEffect> {
         return object : Connection<CounterEffect> {
