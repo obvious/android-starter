@@ -44,9 +44,11 @@ class CounterScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState).also {
-            controller.connect(::connectEvents)
-        }
+        val view = super.onCreateView(inflater, container, savedInstanceState)!!
+
+        controller.connect { events -> connectEvents(view, events) }
+
+        return view
     }
 
     override fun onResume() {
@@ -64,7 +66,10 @@ class CounterScreen : Fragment() {
         super.onDestroyView()
     }
 
-    private fun connectEvents(events: Consumer<CounterEvent>): Connection<CounterModel> {
+    private fun connectEvents(
+        rootView: View,
+        events: Consumer<CounterEvent>
+    ): Connection<CounterModel> {
         // Set up UI event listeners here
 
         return object : Connection<CounterModel> {
