@@ -1,16 +1,14 @@
 [versions]
-com-spotify-mobius = "1.4.0"
-org-jetbrains-kotlin = "1.3.72"
+com-spotify-mobius = "1.5.8"
 
 [libraries]
-androidx-appcompat = "androidx.appcompat:appcompat:1.1.0"
-androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-androidx-corektx = "androidx.core:core-ktx:1.2.0"
-androidx-lifecycle-common = "androidx.lifecycle:lifecycle-common:2.4.1"
-androidx-espresso-core = "androidx.test.espresso:espresso-core:3.2.0"
-androidx-junit = "androidx.test.ext:junit:1.1.1"
-truth = "com.google.truth:truth:1.0.1"
+androidx-appcompat = "androidx.appcompat:appcompat:1.6.0-alpha01"
+androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.3"
+androidx-corektx = "androidx.core:core-ktx:1.9.0-alpha01"
+androidx-espresso-core = "androidx.test.espresso:espresso-core:3.5.0-alpha04"
+androidx-junit = "androidx.test.ext:junit:1.1.4-alpha04"
+androidx-lifecycle-common = "androidx.lifecycle:lifecycle-common:2.5.0-alpha03"
+junit = "junit:junit:4.13.2"
 mobius-android = { module = "com.spotify.mobius:mobius-android", version.ref = "com-spotify-mobius" }
 mobius-test = { module = "com.spotify.mobius:mobius-test", version.ref = "com-spotify-mobius" }
-junit = "junit:junit:4.12"
-kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "org-jetbrains-kotlin" }
+truth = "com.google.truth:truth:1.1.3"
