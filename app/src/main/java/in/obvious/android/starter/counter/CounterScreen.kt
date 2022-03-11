@@ -31,17 +31,18 @@ class CounterScreen : Fragment() {
         }
 
       Mobius.loop(
-          update,
-          CounterEffectHandler(
-            countdownFactory = countdownFactory,
-            uiWorkRunner = MainThreadUiWorkRunner()
-          )
+        update,
+        CounterEffectHandler(
+          countdownFactory = countdownFactory,
+          uiWorkRunner = MainThreadUiWorkRunner()
         )
-        .init(CounterInit())
+      )
     }
 
   private val controller: MobiusLoop.Controller<CounterModel, CounterEvent> by
-    lazy(LazyThreadSafetyMode.NONE) { MobiusAndroid.controller(loop, CounterModel()) }
+    lazy(LazyThreadSafetyMode.NONE) {
+      MobiusAndroid.controller(loop, CounterModel(), CounterInit())
+    }
 
   override fun onCreateView(
     inflater: LayoutInflater,
