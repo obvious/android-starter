@@ -1,8 +1,8 @@
 package `in`.obvious.android.starter
 
-import `in`.obvious.android.starter.counter.CounterScreen
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import `in`.obvious.android.starter.counter.CounterScreen
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,11 +10,8 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    if(savedInstanceState == null) {
-      supportFragmentManager
-        .beginTransaction()
-        .add(R.id.container, CounterScreen())
-        .commit()
+    if (savedInstanceState == null) {
+      supportFragmentManager.beginTransaction().add(R.id.container, CounterScreen()).commit()
     }
   }
 }

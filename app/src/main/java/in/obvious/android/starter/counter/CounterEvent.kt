@@ -2,12 +2,12 @@ package `in`.obvious.android.starter.counter
 
 sealed class CounterEvent
 
-object IncrementClicked: CounterEvent()
+object IncrementClicked : CounterEvent()
 
-object DecrementClicked: CounterEvent()
+object DecrementClicked : CounterEvent()
 
-object StartCountdownClicked: CounterEvent()
+object StartCountdownClicked : CounterEvent()
 
-object CountdownTick: CounterEvent()
+object CountdownTick : CounterEvent()
 
-object CountdownComplete: CounterEvent()
+object CountdownComplete : CounterEvent()

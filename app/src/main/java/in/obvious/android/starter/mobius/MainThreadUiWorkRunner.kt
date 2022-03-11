@@ -5,9 +5,9 @@ import android.os.Looper
 
 class MainThreadUiWorkRunner : UiWorkRunner {
 
-    private val handler = Handler(Looper.getMainLooper())
+  private val handler = Handler(Looper.getMainLooper())
 
-    override fun post(work: () -> Unit) {
-        handler.post(work)
-    }
+  override fun post(work: () -> Unit) {
+    handler.post(work)
+  }
 }
