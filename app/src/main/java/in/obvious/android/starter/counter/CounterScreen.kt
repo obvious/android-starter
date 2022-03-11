@@ -1,7 +1,8 @@
 package `in`.obvious.android.starter.counter
 
-import `in`.obvious.android.starter.R
+import `in`.obvious.android.starter.databinding.ScreenCounterBinding
 import `in`.obvious.android.starter.mobius.MainThreadUiWorkRunner
+import `in`.obvious.android.starter.util.viewBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,11 @@ import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
 import com.spotify.mobius.functions.Consumer
-import kotlinx.android.synthetic.main.screen_counter.*
-import kotlinx.android.synthetic.main.screen_counter.view.*
-import kotlinx.android.synthetic.main.screen_counter.view.startCountdown
 
 class CounterScreen : Fragment() {
+
+    private var _binding: ScreenCounterBinding? = null
+    private val binding get() = _binding!!
 
     private val loop: MobiusLoop.Builder<CounterModel, CounterEvent, CounterEffect> by lazy(
         LazyThreadSafetyMode.NONE
@@ -47,15 +48,17 @@ class CounterScreen : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.screen_counter, container, false)
+        _binding = ScreenCounterBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        controller.connect { events -> connectEvents(view, events) }
-
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        controller.connect { events -> connectEvents(events) }
     }
 
     override fun onResume() {
@@ -70,49 +73,49 @@ class CounterScreen : Fragment() {
 
     override fun onDestroyView() {
         controller.disconnect()
+        _binding = null
         super.onDestroyView()
     }
 
     private fun connectEvents(
-        rootView: View,
         events: Consumer<CounterEvent>
     ): Connection<CounterModel> {
-        setupEvents(rootView, events)
+        setupEvents(events)
 
         return object : Connection<CounterModel> {
 
             override fun accept(value: CounterModel) {
-                render(rootView, value)
+                render(value)
             }
 
             override fun dispose() {
-                disposeEvents(rootView)
+                disposeEvents()
             }
         }
     }
 
-    private fun setupEvents(view: View, events: Consumer<CounterEvent>) {
-        view.incrementCounter.setOnClickListener { events.accept(IncrementClicked) }
-        view.decrementCounter.setOnClickListener { events.accept(DecrementClicked) }
-        view.startCountdown.setOnClickListener { events.accept(StartCountdownClicked) }
+    private fun setupEvents(events: Consumer<CounterEvent>) {
+        binding.incrementCounter.setOnClickListener { events.accept(IncrementClicked) }
+        binding.decrementCounter.setOnClickListener { events.accept(DecrementClicked) }
+        binding.startCountdown.setOnClickListener { events.accept(StartCountdownClicked) }
     }
 
-    private fun disposeEvents(view: View) {
-        view.incrementCounter.setOnClickListener(null)
-        view.decrementCounter.setOnClickListener(null)
-        view.startCountdown.setOnClickListener(null)
+    private fun disposeEvents() {
+        binding.incrementCounter.setOnClickListener(null)
+        binding.decrementCounter.setOnClickListener(null)
+        binding.startCountdown.setOnClickListener(null)
     }
 
-    private fun render(view: View, model: CounterModel) {
-        view.counterLabel.text = model.counterValue.toString()
+    private fun render(model: CounterModel) {
+        binding.counterLabel.text = model.counterValue.toString()
         if (model.isCountdownOngoing) {
-            view.incrementCounter.visibility = View.INVISIBLE
-            view.decrementCounter.visibility = View.INVISIBLE
-            startCountdown.isEnabled = false
+            binding.incrementCounter.visibility = View.INVISIBLE
+            binding.decrementCounter.visibility = View.INVISIBLE
+            binding.startCountdown.isEnabled = false
         } else {
-            view.incrementCounter.visibility = View.VISIBLE
-            view.decrementCounter.visibility = View.VISIBLE
-            startCountdown.isEnabled = true
+            binding.incrementCounter.visibility = View.VISIBLE
+            binding.decrementCounter.visibility = View.VISIBLE
+            binding.startCountdown.isEnabled = true
         }
     }
 }
