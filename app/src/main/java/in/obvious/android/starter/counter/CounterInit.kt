@@ -6,7 +6,7 @@ import com.spotify.mobius.Init
 
 class CounterInit : Init<CounterModel, CounterEffect> {
 
-    override fun init(model: CounterModel): First<CounterModel, CounterEffect> {
-        return first(model)
-    }
+  override fun init(model: CounterModel): First<CounterModel, CounterEffect> {
+    return first(model)
+  }
 }

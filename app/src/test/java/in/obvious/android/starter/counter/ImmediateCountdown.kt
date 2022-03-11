@@ -4,35 +4,31 @@ import java.util.concurrent.TimeUnit
 
 class ImmediateCountdown : Countdown {
 
-    var cancelled: Boolean = false
+  var cancelled: Boolean = false
 
-    override fun start(
-        tickAmount: Int,
-        tickTimeUnit: TimeUnit,
-        tick: () -> Unit,
-        done: () -> Unit
-    ) {
-        val totalSecondsToCount =
-            TimeUnit.SECONDS.convert(tickAmount.toLong(), tickTimeUnit).toInt()
+  override fun start(tickAmount: Int, tickTimeUnit: TimeUnit, tick: () -> Unit, done: () -> Unit) {
+    val totalSecondsToCount = TimeUnit.SECONDS.convert(tickAmount.toLong(), tickTimeUnit).toInt()
 
-        repeat(totalSecondsToCount) { tick() }
-        done()
-    }
+    repeat(totalSecondsToCount) { tick() }
+    done()
+  }
 
-    override fun cancel() {
-        cancelled = true
-    }
+  override fun cancel() {
+    cancelled = true
+  }
 
-    object Factories {
+  object Factories {
 
-        fun exact(countdown: ImmediateCountdown): Countdown.Factory = object : Countdown.Factory {
-            override fun create(): Countdown = countdown
+    fun exact(countdown: ImmediateCountdown): Countdown.Factory =
+      object : Countdown.Factory {
+        override fun create(): Countdown = countdown
+      }
+
+    fun createNew(): Countdown.Factory =
+      object : Countdown.Factory {
+        override fun create(): Countdown {
+          return ImmediateCountdown()
         }
-
-        fun createNew(): Countdown.Factory = object : Countdown.Factory {
-            override fun create(): Countdown {
-                return ImmediateCountdown()
-            }
-        }
-    }
+      }
+  }
 }

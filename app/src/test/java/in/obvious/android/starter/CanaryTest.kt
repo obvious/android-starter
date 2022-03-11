@@ -5,11 +5,11 @@ import org.junit.Test
 
 class CanaryTest {
 
-    @Test
-    fun `test harness should work`() {
-        val expected = 2
-        val actual = 1 + 1
+  @Test
+  fun `test harness should work`() {
+    val expected = 2
+    val actual = 1 + 1
 
-        assertThat(actual).isEqualTo(expected)
-    }
+    assertThat(actual).isEqualTo(expected)
+  }
 }
