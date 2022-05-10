@@ -25,11 +25,11 @@ spotless {
   kotlin {
     target("**/*.kt")
     targetExclude("**/build/**")
-    ktfmt("0.33").googleStyle()
+    ktfmt("0.37").googleStyle()
   }
   kotlinGradle {
     target("**/*.gradle.kts")
     targetExclude("**/build/**")
-    ktfmt("0.33").googleStyle()
+    ktfmt("0.37").googleStyle()
   }
 }
