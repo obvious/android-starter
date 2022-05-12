@@ -5,5 +5,10 @@
 .DS_Store
 /build
 /captures
+
+# External plugins
+!.idea/externalDependencies.xml
+!.idea/ktfmt.xml
+
 .externalNativeBuild
 .cxx
