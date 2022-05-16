@@ -1,0 +1,31 @@
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+name: Run tests
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3.0.2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3.3.0
+      with:
+        distribution: adoptium
+        java-version: 18
+
+    - name: Run checks
+      uses: gradle/gradle-build-action@v2.1.6
+      with:
+        arguments: check
