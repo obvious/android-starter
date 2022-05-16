@@ -1,4 +1,8 @@
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
+
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
@@ -30,6 +34,10 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
   buildFeatures { viewBinding = true }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 }
 
 dependencies {
