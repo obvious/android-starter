@@ -22,7 +22,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v3.3.0
       with:
-        distribution: adoptium
+        distribution: temurin
         java-version: 18
 
     - name: Run checks
